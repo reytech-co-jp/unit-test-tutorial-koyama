@@ -14,7 +14,10 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class AnimeServiceTest {
@@ -45,6 +48,13 @@ class AnimeServiceTest {
     assertThatThrownBy(() -> animeService.getAnime(1))
         .isInstanceOf(ResourceNotFoundException.class)
         .hasMessage("resource not found");
+  }
+
+  @Test
+  public void アニメの登録ができること() {
+    doNothing().when(animeMapper).createAnime(any(Anime.class));
+    animeService.registerAnime("name", "genre");
+    verify(animeMapper).createAnime(any(Anime.class));
   }
 
 }
